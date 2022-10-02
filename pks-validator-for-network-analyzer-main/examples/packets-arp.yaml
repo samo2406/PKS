@@ -1,0 +1,111 @@
+name: PKS2022/23
+pcap_name: arp.pcap
+filter_name: ARP
+complete_comms:
+  - number_comm: 1
+    src_comm: 192.168.1.33
+    dst_comm: 192.168.1.1
+    packets:
+      - frame_number: 3
+        len_frame_pcap: 42
+        len_frame_medium: 64
+        frame_type: ETHERNET II
+        src_mac: 00:14:38:06:E0:93
+        dst_mac: FF:FF:FF:FF:FF:FF
+        ether_type: ARP
+        arp_opcode: REQUEST
+        src_ip: 192.168.1.33
+        dst_ip: 192.168.1.1
+        hexa_frame: |
+          ff ff ff ff ff ff 00 14 38 06 e0 93 08 06 00 01
+          08 00 06 04 00 01 00 14 38 06 e0 93 c0 a8 01 21
+          00 00 00 00 00 00 c0 a8 01 01
+
+      - frame_number: 4
+        len_frame_pcap: 60
+        len_frame_medium: 64
+        frame_type: ETHERNET II
+        src_mac: 00:02:CF:AB:A2:4C
+        dst_mac: 00:14:38:06:E0:93
+        ether_type: ARP
+        arp_opcode: REPLY
+        src_ip: 192.168.1.1
+        dst_ip: 192.168.1.33
+        hexa_frame: |
+          00 14 38 06 e0 93 00 02 cf ab a2 4c 08 06 00 01
+          08 00 06 04 00 02 00 02 cf ab a2 4c c0 a8 01 01
+          00 14 38 06 e0 93 c0 a8 01 21 00 00 00 00 00 00
+          00 00 00 00 00 00 00 00 00 00 00 00
+
+partial_comms:
+  - number_comm: 1
+    packets:
+      - frame_number: 1
+        len_frame_pcap: 60
+        len_frame_medium: 64
+        frame_type: ETHERNET II
+        src_mac: 84:B8:02:66:72:34
+        dst_mac: FF:FF:FF:FF:FF:FF
+        ether_type: ARP
+        arp_opcode: REQUEST
+        src_ip: 147.175.144.1
+        dst_ip: 147.175.144.40
+        hexa_frame: |
+          FF FF FF FF FF FF 84 B8 02 66 72 34 08 06 00 01
+          08 00 06 04 00 01 84 B8 02 66 72 34 93 AF 90 01
+          00 00 00 00 00 00 93 AF 90 28 00 00 00 00 00 00
+          00 00 00 00 00 00 00 00 93 F7 2A 5D
+
+  - number_comm: 2
+    packets:
+      - frame_number: 1
+        len_frame_pcap: 60
+        len_frame_medium: 64
+        frame_type: ETHERNET II
+        src_mac: 84:B8:02:66:72:34
+        dst_mac: FF:FF:FF:FF:FF:FF
+        ether_type: ARP
+        arp_opcode: REQUEST
+        src_ip: 147.175.144.1
+        dst_ip: 147.175.144.40
+        hexa_frame: |
+          FF FF FF FF FF FF 84 B8 02 66 72 34 08 06 00 01
+          08 00 06 04 00 01 84 B8 02 66 72 34 93 AF 90 01
+          00 00 00 00 00 00 93 AF 90 28 00 00 00 00 00 00
+          00 00 00 00 00 00 00 00 93 F7 2A 5D
+
+  - number_comm: 3
+    packets:
+      - frame_number: 1
+        len_frame_pcap: 60
+        len_frame_medium: 64
+        frame_type: ETHERNET II
+        src_mac: 60:6B:BD:7B:42:AF
+        dst_mac: FF:FF:FF:FF:FF:FF
+        ether_type: ARP
+        arp_opcode: REQUEST
+        src_ip: 147.175.145.234
+        dst_ip: 147.175.144.1
+        hexa_frame: |
+          FF FF FF FF FF FF 60 6B BD 7B 42 AF 08 06 00 01
+          08 00 06 04 00 01 60 6B BD 7B 42 AF 93 AF 91 EA
+          00 00 00 00 00 00 93 AF 90 01 00 00 00 00 00 00
+          00 00 00 00 00 00 00 00 00 00 00 00
+
+  - number_comm: 4
+    packets:
+      - frame_number: 22
+        len_frame_pcap: 60
+        len_frame_medium: 64
+        frame_type: ETHERNET II
+        src_mac: CC:08:09:D4:00:00
+        dst_mac: CC:08:09:D4:00:02
+        ether_type: ARP
+        arp_opcode: REPLY
+        src_ip: 12.0.0.1
+        dst_ip: 12.0.0.2
+        hexa_frame: |
+          CC 08 09 D4 00 02 CC 08 09 D4 00 00 08 06 00 01
+          08 00 06 04 00 02 CC 08 09 D4 00 00 0C 00 00 01
+          CC 08 09 D4 00 02 0C 00 00 02 00 00 00 00 00 00
+          00 00 00 00 00 00 00 00 00 00 00 00

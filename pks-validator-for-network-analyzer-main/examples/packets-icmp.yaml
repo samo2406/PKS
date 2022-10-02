@@ -1,0 +1,89 @@
+name: PKS2022/23
+pcap_name: icmp.pcap
+filter_name: ICMP
+complete_comms:
+  - number_comm: 1
+    src_comm: 192.168.1.33
+    dst_comm: 147.175.111.1
+    packets:
+      - frame_number: 1695
+        len_frame_pcap: 106
+        len_frame_medium: 110
+        frame_type: ETHERNET II
+        src_mac: 00:14:38:06:E0:93
+        dst_mac: 00:02:CF:AB:A2:4C
+        ether_type: IPv4
+        src_ip: 192.168.1.33
+        dst_ip: 147.175.111.1
+        protocol: ICMP
+        icmp_type: ECHO REQUEST
+        hexa_frame: |
+          00 02 CF AB A2 4C 00 14 38 06 E0 93 08 00 45 00
+          00 5C 23 34 00 00 01 01 D1 F3 C0 A8 01 21 93 AF
+          6F 01 08 00 E0 FF 02 00 15 00 00 00 00 00 00 00
+          00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+          00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+          00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+          00 00 00 00 00 00 00 00 00 00
+      
+      - frame_number: 1696
+        len_frame_pcap: 70
+        len_frame_medium: 74
+        frame_type: ETHERNET II
+        src_mac: 00:02:CF:AB:A2:4C 
+        dst_mac: 00:14:38:06:E0:93
+        ether_type: IPv4
+        src_ip: 192.168.1.1
+        dst_ip: 192.168.1.33
+        protocol: ICMP
+        icmp_type: TIME EXCEEDED
+        hexa_frame: |
+          00 14 38 06 E0 93 00 02 CF AB A2 4C 08 00 45 00
+          00 38 00 D1 00 00 FE 01 38 81 C0 A8 01 01 C0 A8
+          01 21 0B 00 F4 FF 00 00 00 00 45 00 00 5C 23 34
+          00 00 00 01 D2 F3 C0 A8 01 21 93 AF 6F 01 08 00
+          E0 FF 02 00 15 00
+  
+  - number_comm: 2
+    src_comm: 192.168.1.33
+    dst_comm: 147.175.111.1
+    packets:
+      - frame_number: 1755
+        len_frame_pcap: 106
+        len_frame_medium: 110
+        frame_type: ETHERNET II
+        src_mac: 00:14:38:06:E0:93
+        dst_mac: 00:02:CF:AB:A2:4C
+        ether_type: IPv4
+        src_ip: 192.168.1.33
+        dst_ip: 147.175.111.1
+        protocol: ICMP
+        icmp_type: ECHO REQUEST
+        hexa_frame: |
+          00 02 CF AB A2 4C 00 14 38 06 E0 93 08 00 45 00
+          00 5C 23 52 00 00 08 01 CA D5 C0 A8 01 21 93 AF
+          6F 01 08 00 C9 FF 02 00 2C 00 00 00 00 00 00 00
+          00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+          00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+          00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+          00 00 00 00 00 00 00 00 00 00
+
+      - frame_number: 1756
+        len_frame_pcap: 106
+        len_frame_medium: 110
+        frame_type: ETHERNET II
+        src_mac: 00:02:CF:AB:A2:4C 
+        dst_mac: 00:14:38:06:E0:93
+        ether_type: IPv4
+        src_ip: 147.175.111.1
+        dst_ip: 192.168.1.33
+        protocol: ICMP
+        icmp_type: ECHO REPLY
+        hexa_frame: |
+          00 14 38 06 E0 93 00 02 CF AB A2 4C 08 00 45 06
+          00 5C 5D B4 00 00 39 01 5F 73 93 AF 6F 01 C0 A8
+          01 21 00 00 D1 FF 02 00 2C 00 00 00 00 00 00 00
+          00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+          00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+          00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+          00 00 00 00 00 00 00 00 00 00
