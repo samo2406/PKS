@@ -49,10 +49,10 @@ args = args_parser.parse_args()
 try:
     if os.path.exists(args.schema) and os.path.exists(args.data):
 
-        schema = yamale.make_schema(args.schema, validators=validators)
+        schema = yamale.make_schema(args.schema, parser='ruamel', validators=validators)
 
         # Create a Data object
-        data = yamale.make_data(args.data)
+        data = yamale.make_data(args.data, parser='ruamel')
 
         # Validate data against the schema. Throws a ValueError if data is invalid.
         try:

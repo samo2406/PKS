@@ -5,7 +5,7 @@ ipv4_senders: list(include('sender'), min=1, required=False)
 max_send_packets_by: list(ip(), min=1, required=False)
 filter_name: str(require=False, ignore_case=True, required=False)
 complete_comms: list(include('communication'), min=1, required=False)
-partial_comms: list(include('communication'), min=1, required=False)
+partial_comms: list(include('partial_communication'), min=1, required=False)
 ---
 packet:
   frame_number: int(min=0)
@@ -21,20 +21,29 @@ packet:
   ether_type: >
     any(regex('^IPv[4,6]{1}$', ignore_case=True),
     str(equals='ARP', ignore_case=True),
+    str(equals='ECTP', ignore_case=True),
     str(equals='LLDP', ignore_case=True), required=False)
   sap: >
-    any(str(equals='STP', ignore_case=True),
+    any(str(equals='IPX', ignore_case=True),
+    str(equals='NETBIOS', ignore_case=True),
+    str(equals='STP', ignore_case=True), required=False)
+  pid: >
+    any(str(equals='AppleTalk', ignore_case=True),
     str(equals='CDP', ignore_case=True),
-    str(equals='IPX', ignore_case=True), 
-    str(equals='SAP', ignore_case=True), required=False)
+    str(equals='DTP', ignore_case=True),
+    str(equals='PVSTP+', ignore_case=True), required=False)
   arp_opcode: >
     any(str(equals='REQUEST', ignore_case=True),
     str(equals='REPLY', ignore_case=True), required=False)
   src_ip: ip(required=False)
   dst_ip: ip(required=False)
+  id: int(min=0,required=False)
+  flags_mf: bool(allow_empty=False, required=False)
+  frag_offset: int(min=0,required=False)
   protocol: >
     any(str(equals='ICMP', ignore_case=True),
     str(equals='IGMP', ignore_case=True),
+    str(equals='PIM', ignore_case=True),
     str(equals='TCP', ignore_case=True),
     str(equals='UDP', ignore_case=True),
     required=False)
@@ -51,7 +60,6 @@ packet:
     str(equals='HTTP', ignore_case=True),
     str(equals='POP3', ignore_case=True),
     str(equals='NNTP', ignore_case=True),
-    str(equals='NETBIOS-SSN', ignore_case=True),
     str(equals='IMAP', ignore_case=True),
     str(equals='BGP', ignore_case=True),
     str(equals='LDAP', ignore_case=True),
@@ -61,10 +69,14 @@ packet:
     str(equals='TFTP', ignore_case=True),
     str(equals='NETBIOS-NS', ignore_case=True),
     str(equals='NETBIOS-DGM', ignore_case=True),
+    str(equals='NETBIOS-SSN', ignore_case=True),
+    str(equals='SSDP', ignore_case=True),
     str(equals='SNMP', ignore_case=True),
     str(equals='SNMP-TRAP', ignore_case=True),
     str(equals='SYSLOG', ignore_case=True),
     str(equals='RIP', ignore_case=True),
+    str(equals='DB-LSP-DISC', ignore_case=True),
+    str(equals='MDNS', ignore_case=True),
     str(equals='TRACEROUTE', ignore_case=True), required=False)
   hexa_frame: hexdump()
 

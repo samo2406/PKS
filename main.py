@@ -1,13 +1,20 @@
+import json
 from pylibpcap.pcap import rpcap
 from pathlib import Path
 import yaml
 import binascii
 import ruamel.yaml.scalarstring
 
-FILENAME = 'trace-24.pcap'
+FILENAME = 'trace-27.pcap'
 
 frameNumber = 0
-vystup = {"pcap_name": FILENAME, "packets":[]}
+vystup = {"name": "PKS2022/23", "pcap_name": FILENAME, "packets":[]}
+
+with open(str(Path(__file__).parent)+'/LSAPS.txt') as f:
+    LSAPs_data = f.read()
+
+LSAPs = json.loads(LSAPs_data)
+sap = None
 
 packetList = rpcap(str(Path(__file__).parent)+'/vzorky_pcap_na_analyzu/'+FILENAME)
 
@@ -21,14 +28,20 @@ for packet in packetList:
     else :
         len_frame_medium = 64
 
+    sap = None
     if int((hex_packet[24:28]), 16) > int("5DC", 16):
         frame_type = "ETHERNET II"
-    elif hex_packet[28:32] == "aaaa":
-        frame_type = "IEEE 802.3 - LLC a SNAP"
-    elif hex_packet[28:32] == "ffff":
-        frame_type = "IEEE 802.3 - Raw"
-    else:
-        frame_type = "IEEE 802.3 - LLC"
+    else :
+        if hex_packet[28:32] == "ffff":
+            frame_type = "IEEE 802.3 Raw"
+        else :
+            if hex_packet[28:32] == "aaaa":
+                frame_type = "IEEE 802.3 LLC & SNAP"
+            else:
+                frame_type = "IEEE 802.3 LLC"
+                sap = LSAPs[hex_packet[32:34]]    
+
+        
 
     hexa_frame = ""
     i = 1
@@ -49,7 +62,11 @@ for packet in packetList:
     src_mac = hex_packet[12:24]
     src_mac = ':'.join(src_mac[i:i+2].upper() for i in range(0,12,2))
 
-    vystup["packets"].append({"frame_number":frameNumber, "len_frame_pcap":len_frame_pcap, "len_frame_medium":len_frame_medium, "frame_type":frame_type, "src_mac":src_mac, "dst_mac":dst_mac, "hexa_frame":ruamel.yaml.scalarstring.LiteralScalarString(hexa_frame)})
+    if (sap) :
+        vystup["packets"].append({"frame_number":frameNumber, "len_frame_pcap":len_frame_pcap, "len_frame_medium":len_frame_medium, "frame_type":frame_type, "src_mac":src_mac, "dst_mac":dst_mac, "sap":sap, "hexa_frame":ruamel.yaml.scalarstring.LiteralScalarString(hexa_frame)})
+    else :
+        vystup["packets"].append({"frame_number":frameNumber, "len_frame_pcap":len_frame_pcap, "len_frame_medium":len_frame_medium, "frame_type":frame_type, "src_mac":src_mac, "dst_mac":dst_mac, "hexa_frame":ruamel.yaml.scalarstring.LiteralScalarString(hexa_frame)})
+
 
 yaml = ruamel.yaml.YAML()
 yaml.default_flow_style = False

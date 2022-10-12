@@ -16,7 +16,7 @@ apt install python3 python3-pip
 ```
 - argparse, PyYaml and Yamale
 ```
-pip install argparse pyyaml yamale
+pip install argparse pyyaml yamale ruamel.yaml
 ```
 
 Windows:
@@ -41,7 +41,7 @@ python3 validator.py -s ~/fiit/pks/schemas/schema.yaml
 
 You can specify the yaml output using the command -d/--data.
 ```
-python3 validator.py -s ~/fiit/pks/data/pks-task1.yaml
+python3 validator.py -d ~/fiit/pks/data/pks-task1.yaml
 ```
 
 ## Authors

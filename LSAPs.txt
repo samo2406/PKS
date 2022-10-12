@@ -1,0 +1,17 @@
+{
+    "00": "Null SAP",
+    "02": "LLC (Individual)",
+    "03": "LLC (Group)",
+    "06": "IP",
+    "0E": "PROWAY",
+    "42": "BPDU", 
+    "4E": "MMS",
+    "5E": "ISI IP",
+    "7E": "X.25 PLP",
+    "8E": "PROWAY",
+    "AA": "SNAP",
+    "E0": "IPX",
+    "F4": "LAN Management",
+    "FE": "ISO Network Layer Protocols",
+    "FF": "Global DSAP"
+}

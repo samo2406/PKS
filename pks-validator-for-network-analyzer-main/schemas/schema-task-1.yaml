@@ -1,5 +1,5 @@
-name: str(equals = "Task 1", ignore_case=True)
-pcap_name: str(min=1, ignore_case=True)
+name: str(equals = 'PKS2022/23', ignore_case=True)
+pcap_name: regex('^.*\.pcap$', min=1, ignore_case=True)
 packets: list(include('packet'), min=1)
 ---
 packet:
@@ -13,4 +13,13 @@ packet:
     str(equals='IEEE 802.3 LLC & SNAP', ignore_case=True))
   src_mac: mac()
   dst_mac: mac()
+  sap: >
+    any(str(equals='IPX', ignore_case=True),
+    str(equals='NETBIOS', ignore_case=True),
+    str(equals='STP', ignore_case=True), required=False)
+  pid: >
+    any(str(equals='AppleTalk', ignore_case=True),
+    str(equals='CDP', ignore_case=True),
+    str(equals='DTP', ignore_case=True),
+    str(equals='PVSTP+', ignore_case=True), required=False)
   hexa_frame: hexdump()

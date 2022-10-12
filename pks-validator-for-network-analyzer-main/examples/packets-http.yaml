@@ -16,6 +16,8 @@ complete_comms:
         src_ip: 192.168.1.33
         dst_ip: 147.175.6.100
         protocol: TCP
+        src_port: 1614
+        dst_port: 80
         app_protocol: HTTP
         hexa_frame: |
           00 02 CF AB A2 4C 00 14 38 06 E0 93 08 00 45 00
@@ -33,6 +35,8 @@ complete_comms:
         src_ip: 147.175.6.100
         dst_ip: 192.168.1.33
         protocol: TCP
+        src_port: 80
+        dst_port: 1614
         app_protocol: HTTP
         hexa_frame: |
           00 14 38 06 E0 93 00 02 CF AB A2 4C 08 00 45 00
@@ -50,6 +54,8 @@ complete_comms:
         src_ip: 192.168.1.33
         dst_ip: 147.175.6.100
         protocol: TCP
+        src_port: 1614
+        dst_port: 80
         app_protocol: HTTP
         hexa_frame: |
           00 02 CF AB A2 4C 00 14 38 06 E0 93 08 00 45 00
@@ -67,6 +73,8 @@ complete_comms:
         src_ip: 147.175.6.100
         dst_ip: 192.168.1.33
         protocol: TCP
+        src_port: 80
+        dst_port: 1614
         app_protocol: HTTP
         hexa_frame: |
           00 14 38 06 E0 93 00 02 CF AB A2 4C 08 00 45 00
@@ -133,6 +141,8 @@ complete_comms:
         src_ip: 192.168.1.33
         dst_ip: 147.175.6.100
         protocol: TCP
+        src_port: 1614
+        dst_port: 80
         app_protocol: HTTP
         hexa_frame: |
           00 02 CF AB A2 4C 00 14 38 06 E0 93 08 00 45 00
@@ -150,6 +160,8 @@ complete_comms:
         src_ip: 192.168.1.33
         dst_ip: 147.175.6.100
         protocol: TCP
+        src_port: 80
+        dst_port: 1614
         app_protocol: HTTP
         hexa_frame: |
           00 02 CF AB A2 4C 00 14 38 06 E0 93 08 00 45 00
@@ -167,6 +179,8 @@ complete_comms:
         src_ip: 192.168.1.33
         dst_ip: 147.175.6.100
         protocol: TCP
+        src_port: 1614
+        dst_port: 80
         app_protocol: HTTP
         hexa_frame: |
           00 14 38 06 E0 93 00 02 CF AB A2 4C 08 00 45 00
@@ -187,6 +201,8 @@ partial_comms:
         src_ip: 192.168.1.33
         dst_ip: 147.175.6.100
         protocol: TCP
+        src_port: 1614
+        dst_port: 80
         app_protocol: HTTP
         hexa_frame: |
           00 02 CF AB A2 4C 00 14 38 06 E0 93 08 00 45 00
