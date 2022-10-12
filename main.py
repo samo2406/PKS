@@ -1,17 +1,18 @@
-from scapy.all import rdpcap
+from pylibpcap.pcap import rpcap
 from pathlib import Path
 import yaml
 import binascii
 import ruamel.yaml.scalarstring
 
-FILENAME = 'trace-25.pcap'
+FILENAME = 'trace-24.pcap'
 
 frameNumber = 0
 vystup = {"pcap_name": FILENAME, "packets":[]}
 
-packetList = rdpcap(str(Path(__file__).parent)+'\\vzorky_pcap_na_analyzu\\'+FILENAME)
+packetList = rpcap(str(Path(__file__).parent)+'/vzorky_pcap_na_analyzu/'+FILENAME)
 
 for packet in packetList:
+    packet = packet[2]
     hex_packet = binascii.hexlify(bytes(packet)).decode("utf-8")
     frameNumber += 1
     len_frame_pcap = len(packet)
@@ -33,7 +34,7 @@ for packet in packetList:
     i = 1
     for char in hex_packet:
         if i % 2 == 0:
-            if i == 32:   #každých 32 znakov ukončí riadok
+            if i == 32:
                 hexa_frame += str(char).upper() + "\n"
                 i = 1
             else:
@@ -52,5 +53,5 @@ for packet in packetList:
 
 yaml = ruamel.yaml.YAML()
 yaml.default_flow_style = False
-with open(str(Path(__file__).parent) +'\\output.yaml', 'w') as output:
+with open(str(Path(__file__).parent) +'/output.yaml', 'w') as output:
     yaml.dump(vystup, output)
