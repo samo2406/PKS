@@ -1,0 +1,22 @@
+{
+    "7": "ECHO",
+    "19": "CHARGEN",
+    "20": "FTP-DATA",
+    "21": "FTP-CONTROL",
+    "22": "SSH",
+    "23": "TELNET",
+    "25": "SMTP",
+    "53": "DOMAIN",
+    "79": "FINGER",
+    "80": "HTTP",
+    "110": "POP3",
+    "111": "SUNRPC",
+    "119": "NNTP",
+    "139": "NETBIOS-SSN",
+    "143": "IMAP",
+    "179": "BGP",
+    "389": "LDAP",
+    "443": "HTTPS",
+    "445": "MICROSOFT-DS",
+    "1080": "SOCKS"
+}
