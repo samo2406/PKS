@@ -39,19 +39,19 @@ class Packet:
 packets = []
 vystup = {"name": "PKS2022/23", "pcap_name": FILENAME, "packets":[], "ipv4_senders":[], "max_send_packets_by":list(), "communication": list(), "partial_communication": list()}
 
-with open(str(Path(__file__).parent)+'/LSAPs.txt') as f:
+with open(str(Path(__file__).parent)+'/Protocols/LSAPs.txt') as f:
     LSAPs_data = f.read()
 LSAPs = json.loads(LSAPs_data)
 
-with open(str(Path(__file__).parent)+'/ETHERTYPEs.txt') as f:
+with open(str(Path(__file__).parent)+'/Protocols/ETHERTYPEs.txt') as f:
     ETHERTYPEs_data = f.read()
 ETHERTYPEs = json.loads(ETHERTYPEs_data)
 
-with open(str(Path(__file__).parent)+'/IP_PROTOCOLs.txt') as f:
+with open(str(Path(__file__).parent)+'/Protocols/IP_PROTOCOLs.txt') as f:
     IPPROTOCOLs_data = f.read()
 IPPROTOCOLs = json.loads(IPPROTOCOLs_data)
 
-with open(str(Path(__file__).parent)+'/TCP_PORTs.txt') as f:
+with open(str(Path(__file__).parent)+'/Protocols/TCP_PORTs.txt') as f:
     TCP_PORTs_data = f.read()
 TCP_PORTs = json.loads(TCP_PORTs_data)
 
