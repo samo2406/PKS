@@ -7,11 +7,10 @@ from typing_extensions import Self
 from urllib.parse import non_hierarchical
 from pylibpcap.pcap import rpcap
 from pathlib import Path
-import yaml
 import binascii
 import ruamel.yaml.scalarstring
 
-FILENAME = 'trace-27.pcap'
+FILENAME = 'trace-26.pcap'
 
 class Packet:
     def __init__(self, frame_number = None, len_frame_pcap = None, len_frame_medium = None, frame_type = None, 
@@ -40,6 +39,7 @@ class Packet:
         self.hex_packet = hex_packet
     seq = None
     paired = False
+    opcode = None
 
 packets = []
 vystup = {"name": "PKS2022/23", "pcap_name": FILENAME, "packets":[], "ipv4_senders":[], "max_send_packets_by":list(), "communication": list(), "partial_communication": list()}
@@ -184,26 +184,45 @@ def ulohy123():
         if v == max_sent:
             packet_senders.append(k)
     vystup["max_send_packets_by"] = packet_senders
+ 
+def uloha4_tftp():
+    n_com = 0
+    comms_packets = None
+    global packets
+    global vystup
+    last_port = None
+    for p in packets:
+        if p.app_protocol == "TFTP" :
+            if (comms_packets) :
+                n_com += 1
+                vystup["communication"].append({"number_comm": n_com, "src_comm":p.src_ip, "dst_comm":p.dst_ip, "packets": comms_packets})
 
+            p.opcode = int(p.hex_packet[84:88], 16)
+            if p.opcode == 1:
+                p.opcode = "READ REQUEST"
+            elif p.opcode == 2 :
+                p.opcode = "WRITE REQUEST"
+            
+            comms_packets = list()
+            comms_packets.append(
+                {"frame_number":p.frame_number, "len_frame_pcap":p.len_frame_pcap, "len_frame_medium":p.len_frame_medium,
+                "frame_type":p.frame_type, "src_mac":p.src_mac, "dst_mac":p.dst_mac, "ether_type":p.ether_type, "src_ip":p.src_ip,
+                "dst_ip":p.dst_ip, "tftp_opcode":p.opcode, "hexa_frame":ruamel.yaml.scalarstring.LiteralScalarString(p.hexa_frame)}
+            )
 
-def uloha4() :
-    p = input("Zadaj nazov protokolu: ").upper()
-    if p in TCP_PORTs.values() : 
-        uloha4_tcp()
-    elif p == "TFTP" or p == "DHCP" or p == "RIP":
-        uloha4_udp()
-    elif p == "ICMP":
-        uloha4_icmp()
-    elif p == "ARP":
-        uloha4_arp()
-    else:
-        print("Nespravny protokol\n")
-        return
+            last_port = p.src_port
+        elif p.protocol == "UDP" :
+            if p.dst_port == last_port:
+                last_port = p.src_port
+                comms_packets.append(
+                    {"frame_number":p.frame_number, "len_frame_pcap":p.len_frame_pcap, "len_frame_medium":p.len_frame_medium,
+                    "frame_type":p.frame_type, "src_mac":p.src_mac, "dst_mac":p.dst_mac, "ether_type":p.ether_type, "src_ip":p.src_ip,
+                    "dst_ip":p.dst_ip, "tftp_opcode":p.opcode, "hexa_frame":ruamel.yaml.scalarstring.LiteralScalarString(p.hexa_frame)}
+                )
 
-def uloha4_tcp():
-    print('tcp')   
-def uloha4_udp():
-    print('udp')  
+    n_com += 1
+    vystup["communication"].append({"number_comm": n_com, "packets": comms_packets})            
+
 
 def uloha4_icmp():
     comms = list()
@@ -228,7 +247,7 @@ def uloha4_icmp():
                 if(p2.seq) and (p != p2) and (not p2.paired):
                     if p.seq == p2.seq :
                         n_com += 1
-                        vystup["communication"].append({"number_comm": n_com, "packets": [
+                        vystup["communication"].append({"number_comm": n_com, "src_comm":p.src_ip, "dst_comm":p.dst_ip, "packets": [
                             {"frame_number":comms[i-1].frame_number, "len_frame_pcap":comms[i-1].len_frame_pcap, "len_frame_medium":comms[i-1].len_frame_medium,
                             "frame_type":comms[i-1].frame_type, "src_mac":comms[i-1].src_mac, "dst_mac":comms[i-1].dst_mac, "ether_type":comms[i-1].ether_type, "src_ip":comms[i-1].src_ip,
                             "dst_ip":comms[i-1].dst_ip, "id":int(comms[i-1].hex_packet[36:40], 16), "flags_mf": comms[i-1].flags_mf, "frag_offset":comms[i-1].frag_offset,
@@ -263,23 +282,70 @@ def uloha4_icmp():
                         
         
 def uloha4_arp():
-    print('arp')  
+    comms = list()
+    global packets
+    global vystup
+    for p in packets:
+        if p.ether_type == "ARP" :
+            p.opcode = int(p.hex_packet[40:44], 16)
+            if p.opcode == 1:
+                p.opcode = "REQUEST"
+            elif p.opcode == 2 :
+                p.opcode = "REPLY"
+            p.src_ip = str(int(p.hex_packet[56:58],16))+'.'+str(int(p.hex_packet[58:60],16))+'.'+str(int(p.hex_packet[60:62],16))+'.'+str(int(p.hex_packet[62:64],16))
+            p.dst_ip = str(int(p.hex_packet[76:78],16))+'.'+str(int(p.hex_packet[78:80],16))+'.'+str(int(p.hex_packet[80:82],16))+'.'+str(int(p.hex_packet[82:84],16))
+
+            comms.append(p)
+
+    n_com = 0
+    for p in comms :
+        if (not p.paired):
+            for p2 in comms :
+                if (p2 != p) and (not p2.paired) and (p.src_mac == p2.dst_mac) :
+                    n_com += 1
+                    vystup["communication"].append({"number_comm": n_com, "packets": [
+                        {"frame_number":p.frame_number, "len_frame_pcap":p.len_frame_pcap, "len_frame_medium":p.len_frame_medium,
+                        "frame_type":p.frame_type, "src_mac":p.src_mac, "dst_mac":p.dst_mac, "ether_type":p.ether_type, "arp_opcode":p.opcode, "src_ip":p.src_ip,
+                        "dst_ip":p.dst_ip, "hexa_frame":ruamel.yaml.scalarstring.LiteralScalarString(p.hexa_frame)},
+                        {"frame_number":p2.frame_number, "len_frame_pcap":p2.len_frame_pcap, "len_frame_medium":p2.len_frame_medium,
+                        "frame_type":p2.frame_type, "src_mac":p2.src_mac, "dst_mac":p2.dst_mac, "ether_type":p2.ether_type, "arp_opcode":p2.opcode, "src_ip":p2.src_ip,
+                        "dst_ip":p2.dst_ip, "hexa_frame":ruamel.yaml.scalarstring.LiteralScalarString(p2.hexa_frame)}
+                        ]})
+                    p.paired = True
+                    p2.paired = True
+
+    n_com = 0
+    for p in comms :
+        if (not p.paired):
+            n_com += 1
+            vystup["partial_communication"].append({"number_comm": n_com, "packets": 
+                {"frame_number":p.frame_number, "len_frame_pcap":p.len_frame_pcap, "len_frame_medium":p.len_frame_medium,
+                "frame_type":p.frame_type, "src_mac":p.src_mac, "dst_mac":p.dst_mac, "ether_type":p.ether_type, "arp_opcode":p.opcode, "src_ip":p.src_ip,
+                "dst_ip":p.dst_ip, "hexa_frame":ruamel.yaml.scalarstring.LiteralScalarString(p.hexa_frame)}})
+
+def yaml_print():
+    yaml = ruamel.yaml.YAML()
+    yaml.default_flow_style = False
+    with open(str(Path(__file__).parent) +'/output.yaml', 'w') as output:
+        yaml.dump(vystup, output)
 
 while(1) :
-    i = input("[1] Ulohy 1 2 3\n[2] Uloha 4\n[0] Ukoncit program\n")
+    i = input("[1] Ulohy 1 2 3\n[2] Uloha 4 - TFTP\n[3] Uloha 4 - ICMP\n[4] Uloha 4 - ARP\n[0] Ukoncit program\n")
     if i == '1':
         ulohy123()
-        yaml = ruamel.yaml.YAML()
-        yaml.default_flow_style = False
-        with open(str(Path(__file__).parent) +'/output.yaml', 'w') as output:
-            yaml.dump(vystup, output)
+        yaml_print()
     elif i == '2':
         ulohy123()
-        uloha4()
-        yaml = ruamel.yaml.YAML()
-        yaml.default_flow_style = False
-        with open(str(Path(__file__).parent) +'/output.yaml', 'w') as output:
-            yaml.dump(vystup, output)
+        uloha4_tftp()
+        yaml_print()
+    elif i == '3':
+        ulohy123()
+        uloha4_icmp()
+        yaml_print()
+    elif i == '4':
+        ulohy123()
+        uloha4_arp()
+        yaml_print()
     elif i == '0':
         break
     
