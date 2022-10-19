@@ -1,10 +1,5 @@
-from asyncore import read
-import enum
 import json
 from struct import pack
-from sys import flags
-from typing_extensions import Self
-from urllib.parse import non_hierarchical
 from pylibpcap.pcap import rpcap
 from pathlib import Path
 import binascii
