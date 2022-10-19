@@ -6,7 +6,7 @@
     "22": "SSH",
     "23": "TELNET",
     "25": "SMTP",
-    "53": "DOMAIN",
+    "53": "DNS",
     "79": "FINGER",
     "80": "HTTP",
     "110": "POP3",
